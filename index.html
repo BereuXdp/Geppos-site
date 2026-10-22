@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geppos Italiano · Fortaleza</title>
+<meta name="description" content="Geppos Italiano, o primeiro restaurante italiano contemporâneo de Fortaleza. Massas artesanais, carta de vinhos, drinks autorais e música ao vivo no Meireles.">
+<script>
+  // ao atualizar a página, sempre volta para o topo
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  window.addEventListener('load', () => window.scrollTo(0, 0));
+
+  // esconde os elementos animados antes do primeiro paint; se a Motion não carregar, mostra tudo
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('motion');
+    setTimeout(() => { if (!window.__motionReady) document.documentElement.classList.remove('motion'); }, 3000);
+  }
+</script>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@400;500;600&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #121212;
+    --ink-2: #1c1c1c;
+    --ink-3: #2a2a2a;
+    --cream: #fff4ee;
+    --cream-2: #f3e4da;
+    --stone: #d0d0d0;
+    --muted: #777777;
+    --muted-dark: #555555;
+    --brand: #1e3d1f;
+    --brand-light: #6fb35f;
+    --green: #1e3d1f;
+    --green-bright: #297f1c;
+    --line-dark: rgba(255, 244, 238, .16);
+    --line-light: rgba(18,18,18, .16);
+
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --script: "Sacramento", cursive;
+
+    --gutter: clamp(20px, 4vw, 56px);
+    --ease: cubic-bezier(.25, .46, .45, .94);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+
+  /* ---------- tipografia ---------- */
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--brand-light);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .light .eyebrow { color: var(--brand); }
+
+  .display, .h2 {
+    font-family: var(--serif);
+    font-weight: 300;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .display { font-size: clamp(56px, 11vw, 168px); line-height: .82; letter-spacing: -.035em; }
+  .h2 { font-size: clamp(40px, 6vw, 88px); line-height: .9; letter-spacing: -.03em; }
+  .h2 em, .display em { font-style: italic; text-transform: none; letter-spacing: -.02em; }
+  .lead { font-size: clamp(16px, 1.4vw, 18px); color: var(--stone); max-width: 52ch; }
+  .light .lead { color: var(--muted-dark); }
+
+  /* ---------- botões ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 26px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    transition: background .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease);
+    cursor: pointer; background: transparent;
+  }
+  .btn:hover { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+  .btn--solid { background: var(--brand); border-color: var(--green-bright); color: var(--cream); }
+  .btn--solid:hover { background: var(--cream); border-color: var(--cream); color: var(--ink); }
+  .light .btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .btn svg { width: 14px; height: 14px; }
+
+  .link-arrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    border-bottom: 1px solid currentColor; padding-bottom: 6px;
+  }
+  .link-arrow span { transition: transform .4s var(--ease); }
+  .link-arrow:hover span { transform: translateX(6px); }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 22px var(--gutter);
+    transition: background .5s var(--ease), padding .5s var(--ease), border-color .5s;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled { background: rgba(18,18,18, .92); backdrop-filter: blur(10px); padding-block: 14px; border-color: var(--line-dark); }
+  .logo { display: inline-block; line-height: 0; }
+  .logo img { display: block; height: 52px; width: auto; }
+  .nav__links { display: flex; gap: 34px; list-style: none; margin: 0; padding: 0; }
+  .nav__links a { font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--stone); transition: color .3s; }
+  .nav__links a:hover { color: var(--cream); }
+  .nav__right { display: flex; align-items: center; gap: 18px; }
+  .nav .btn { padding: 12px 20px; }
+  .burger { display: none; width: 44px; height: 44px; border: 1px solid var(--line-dark); background: none; border-radius: 2px; cursor: pointer; }
+  .burger span { display: block; width: 18px; height: 1px; background: var(--cream); margin: 5px auto; transition: transform .3s; }
+  .burger[aria-expanded="true"] span:first-child { transform: translateY(3px) rotate(45deg); }
+  .burger[aria-expanded="true"] span:last-child { transform: translateY(-3px) rotate(-45deg); }
+
+  .mobile-menu {
+    position: fixed; inset: 0; z-index: 40; background: var(--ink);
+    display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 0 var(--gutter);
+    opacity: 0; pointer-events: none; transition: opacity .4s var(--ease);
+  }
+  .mobile-menu.open { opacity: 1; pointer-events: auto; }
+  .mobile-menu a.big { font-family: var(--serif); font-weight: 300; font-size: 48px; text-transform: uppercase; line-height: 1.05; letter-spacing: -.02em; }
+  .mobile-menu .btn { margin-top: 32px; align-self: flex-start; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+  .hero__bg { position: absolute; inset: 0; }
+  .hero__bg img { width: 100%; height: 115%; object-fit: cover; object-position: center 40%; }
+  .hero__bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(18,18,18,.75) 0%, rgba(18,18,18,.55) 40%, rgba(18,18,18,.9) 80%, var(--ink) 100%);
+  }
+  .hero__inner { position: relative; padding: 140px var(--gutter) 56px; }
+  .hero__meta { display: flex; justify-content: space-between; gap: 24px; font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--stone); margin-bottom: 28px; }
+  .hero h1 span { display: block; }
+  .hero h1 .indent { padding-left: 12vw; }
+  .hero__foot { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 32px; margin-top: 44px; padding-top: 28px; border-top: 1px solid var(--line-dark); }
+  .hero__foot p { margin: 0; max-width: 46ch; color: var(--stone); }
+  .hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .reveal-line { overflow: hidden; padding-top: .14em; margin-top: -.14em; }
+  .reveal-line > span { display: block; }
+  /* estados iniciais só quando a Motion carregou; sem ela o conteúdo aparece normal */
+  .motion .reveal-line > span { transform: translateY(105%); }
+  .motion .hero__meta, .motion .hero__foot { opacity: 0; }
+
+  /* ---------- marquee ---------- */
+  .marquee { border-block: 1px solid var(--line-dark); overflow: hidden; padding: 22px 0; background: var(--ink); }
+  .marquee__track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+  .marquee__track span { font-family: var(--serif); font-weight: 300; font-size: clamp(26px, 3vw, 40px); text-transform: uppercase; letter-spacing: -.01em; padding-right: 48px; white-space: nowrap; display: inline-flex; align-items: center; gap: 48px; }
+  .marquee__track span::after { content: "✦"; font-size: 14px; color: var(--brand-light); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ---------- seções ---------- */
+  section { position: relative; }
+  .wrap { padding: clamp(88px, 12vw, 160px) var(--gutter); max-width: 1520px; margin: 0 auto; }
+  .light { background: var(--cream); color: var(--ink); }
+  .light .muted { color: var(--muted-dark); }
+  .section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: clamp(48px, 7vw, 96px); }
+  .section-head .h2 { margin-top: 20px; }
+
+  /* sobre */
+  .about { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+  .about__text .h2 { margin: 22px 0 36px; }
+  .about__text p { margin: 0 0 18px; }
+  .about__photos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  .about__photos figure { margin: 0; overflow: hidden; }
+  .about__photos img { width: 100%; aspect-ratio: 3/4; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .about__photos figure:hover img { transform: scale(1.04); }
+  .about__photos figure:nth-child(2) { margin-top: 96px; }
+  .about__photos figcaption { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-dark); padding-top: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-light); margin-top: 48px; }
+  .stats div { padding: 24px 16px 0 0; }
+  .stats div + div { padding-left: 20px; border-left: 1px solid var(--line-light); }
+  .stats strong { display: block; font-family: var(--serif); font-weight: 300; font-size: clamp(40px, 4.4vw, 64px); line-height: 1; }
+  .stats div > span { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-dark); }
+
+  /* chef */
+  .chef { display: grid; grid-template-columns: 1fr 1fr; align-items: center; background: var(--green); }
+  .chef__img { overflow: hidden; }
+  /* recorte só com os dois pratos de cima */
+  .chef__img img { width: 100%; height: auto; aspect-ratio: 6 / 5; object-fit: cover; object-position: center top; }
+  .chef__body { padding: clamp(64px, 9vw, 140px) var(--gutter); display: flex; flex-direction: column; justify-content: center; }
+  .chef blockquote { margin: 28px 0 40px; font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(30px, 3.4vw, 50px); line-height: 1.1; letter-spacing: -.01em; }
+  .chef__sign { font-family: var(--script); font-size: 46px; line-height: 1; color: var(--brand-light); }
+  .chef__role { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); margin-top: 6px; }
+  .chef__mission { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-dark); color: var(--stone); max-width: 48ch; }
+
+  /* cardápio */
+  .dishes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .dish { cursor: default; }
+  .dish__img { overflow: hidden; aspect-ratio: 4/5; background: var(--ink-2); }
+  .dish__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter .6s; filter: saturate(.92); }
+  .dish:hover .dish__img img { transform: scale(1.06); filter: saturate(1.05); }
+  .dish__meta { display: flex; justify-content: space-between; gap: 12px; padding-top: 18px; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--brand-light); }
+  .dish h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.05; margin: 10px 0 8px; }
+  .dish p { margin: 0; color: var(--stone); font-size: 14px; }
+  .dish:nth-child(even) { margin-top: 64px; }
+
+  .menu-cats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(56px, 7vw, 96px); padding-top: 32px; border-top: 1px solid var(--line-dark); align-items: center; justify-content: space-between; }
+  .menu-cats ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; }
+  .menu-cats li { border: 1px solid var(--line-dark); padding: 9px 16px; border-radius: 40px; font-size: 13px; color: var(--stone); }
+
+  /* experiências */
+  .exp { border-top: 1px solid var(--line-light); }
+  .exp__row {
+    display: grid; grid-template-columns: 80px 1.2fr 1fr 160px; gap: 24px; align-items: center;
+    padding: 28px 0; border-bottom: 1px solid var(--line-light); position: relative;
+    transition: padding .5s var(--ease);
+  }
+  .exp__row:hover { padding-left: 16px; }
+  .exp__num { font-family: var(--serif); font-size: 20px; color: var(--brand); }
+  .exp__row h3 { margin: 0; font-family: var(--serif); font-weight: 300; text-transform: uppercase; font-size: clamp(30px, 3.6vw, 54px); line-height: .95; letter-spacing: -.02em; }
+  .exp__row p { margin: 0; color: var(--muted-dark); }
+  .exp__tag { justify-self: end; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--line-light); padding: 7px 12px; border-radius: 2px; white-space: nowrap; }
+
+  /* ambiente */
+  .gallery { display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 16px; height: min(92vh, 860px); }
+  .gallery figure { margin: 0; overflow: hidden; position: relative; }
+  .gallery figure:first-child { grid-row: span 2; }
+  .gallery figure:nth-child(4) { grid-column: span 2; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease); }
+  .gallery figure:hover img { transform: scale(1.05); }
+  .gallery figcaption { position: absolute; left: 16px; bottom: 14px; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--cream); text-shadow: 0 1px 12px rgba(0,0,0,.5); }
+
+  .live { display: grid; grid-template-columns: auto 1fr auto; gap: 32px; align-items: center; margin-top: 16px; padding: 28px 32px; background: var(--ink-2); border: 1px solid var(--line-dark); }
+  .live__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand-light); box-shadow: 0 0 0 0 rgba(41,127,28,.6); animation: pulse 2s infinite; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 14px rgba(41,127,28,0); } 100% { box-shadow: 0 0 0 0 rgba(41,127,28,0); } }
+  .live strong { font-family: var(--serif); font-weight: 400; font-size: 26px; display: block; line-height: 1.1; }
+  .live span { color: var(--stone); font-size: 14px; }
+
+  /* eventos */
+  .events { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 96px); }
+  .events__text .h2 { margin: 20px 0 28px; }
+  .albums { margin-top: 44px; }
+  .albums h4 { margin: 0 0 14px; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--muted-dark); }
+  .albums ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-light); }
+  .albums li { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line-light); font-family: var(--serif); font-size: 22px; }
+  .albums li span { font-family: var(--sans); font-size: 12px; color: var(--muted-dark); letter-spacing: .1em; text-transform: uppercase; align-self: center; }
+
+  .form { background: var(--ink); color: var(--cream); padding: clamp(28px, 4vw, 52px); display: grid; gap: 20px; align-self: start; }
+  .form h3 { margin: 0 0 4px; font-family: var(--serif); font-weight: 300; text-transform: uppercase; font-size: 34px; line-height: 1; }
+  .form p { margin: 0; color: var(--stone); font-size: 14px; }
+  .field { display: grid; gap: 8px; }
+  .field label { font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); }
+  .field input, .field textarea, .field select {
+    width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line-dark);
+    padding: 10px 0; outline: none; border-radius: 0; transition: border-color .3s; font-size: 16px;
+  }
+  .field select option { color: var(--ink); }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--brand-light); }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form .btn { justify-self: start; margin-top: 8px; }
+  .form__ok { display: none; color: var(--brand-light); font-size: 14px; }
+
+  /* prêmios */
+  .awards { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); }
+  .award { padding: 40px 24px; text-align: center; }
+  .award + .award { border-left: 1px solid var(--line-dark); }
+  .award strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 30px; line-height: 1; margin-bottom: 10px; }
+  .award span { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); }
+
+  /* reserva */
+  .reserve { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; }
+  .reserve > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .reserve::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18,18,18,.92) 0%, rgba(18,18,18,.7) 45%, rgba(18,18,18,.15) 100%); z-index: 1; }
+  .reserve .wrap { position: relative; z-index: 2; width: 100%; }
+  .reserve .h2 { margin: 20px 0 28px; max-width: 12ch; }
+  .reserve .hero__ctas { margin-top: 36px; }
+  .hours { display: grid; grid-template-columns: repeat(2, minmax(0, 220px)); gap: 28px; margin-top: 44px; }
+  .hours div { border-top: 1px solid var(--line-dark); padding-top: 14px; }
+  .hours small { display: block; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--brand-light); margin-bottom: 4px; }
+  .hours strong { font-family: var(--serif); font-weight: 400; font-size: 28px; }
+
+  /* rodapé */
+  footer { background: var(--ink); border-top: 1px solid var(--line-dark); }
+  .footer { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; padding: 80px var(--gutter) 48px; max-width: 1520px; margin: 0 auto; }
+  .footer .logo { display: inline-block; margin: 0; }
+  .footer .logo img { height: 84px; }
+  .footer h5 { margin: 0 0 16px; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--brand-light); }
+  .footer p, .footer a { color: var(--stone); font-size: 14px; margin: 0 0 6px; display: block; }
+  .footer a:hover { color: var(--cream); }
+  .footer__tagline { margin-top: 20px !important; max-width: 32ch; }
+  .footer__bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 24px var(--gutter); max-width: 1520px; margin: 0 auto; border-top: 1px solid var(--line-dark); font-size: 12px; color: var(--muted); }
+
+  .wa-float {
+    position: fixed; right: 20px; bottom: 20px; z-index: 45;
+    width: 56px; height: 56px; border-radius: 50%; background: var(--green-bright); color: var(--cream);
+    display: grid; place-items: center; box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    transform: translateY(120px); transition: transform .5s var(--ease), background .3s;
+  }
+  .wa-float.show { transform: none; }
+  .wa-float:hover { background: var(--brand); }
+  .wa-float svg { width: 26px; height: 26px; }
+
+  /* scroll reveal (animado pela Motion) */
+  .motion .r { opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- responsivo ---------- */
+  @media (max-width: 1080px) {
+    .nav__links { display: none; }
+    .burger { display: block; }
+    .dishes { grid-template-columns: repeat(2, 1fr); }
+    .exp__row { grid-template-columns: 56px 1fr; }
+    .exp__row p { grid-column: 2; }
+    .exp__tag { grid-column: 2; justify-self: start; }
+    .footer { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 820px) {
+    .section-head, .about, .chef, .events { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; height: auto; }
+    .gallery figure { aspect-ratio: 4/5; }
+    .gallery figure:first-child { grid-row: auto; grid-column: span 2; aspect-ratio: 4/3; }
+    .gallery figure:nth-child(4) { grid-column: span 2; aspect-ratio: 16/10; }
+    .awards { grid-template-columns: 1fr 1fr; }
+    .award:nth-child(3) { border-left: 0; }
+    .award:nth-child(n+3) { border-top: 1px solid var(--line-dark); }
+    .live { grid-template-columns: auto 1fr; }
+    .live .btn { grid-column: 1 / -1; justify-self: start; }
+    .hero__foot { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .nav .btn { display: none; }
+    .nav .logo img { height: 42px; }
+    .hero h1 .indent { padding-left: 0; }
+    .hero__meta { font-size: 10px; }
+    .dishes { grid-template-columns: 1fr; }
+    .dish:nth-child(even) { margin-top: 0; }
+    .about__photos figure:nth-child(2) { margin-top: 48px; }
+    .stats strong { font-size: 36px; }
+    .stats div > span { font-size: 10px; }
+    .form .row { grid-template-columns: 1fr; }
+    .hours { grid-template-columns: 1fr 1fr; }
+    .footer { grid-template-columns: 1fr; }
+    .menu-cats { flex-direction: column; align-items: flex-start; gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a href="#topo" class="logo" aria-label="Geppos Italiano, início">
+    <img src="img/logo.png" alt="Geppos Italiano" width="1454" height="644">
+  </a>
+  <ul class="nav__links">
+    <li><a href="#casa">A casa</a></li>
+    <li><a href="#cardapio">Cardápio</a></li>
+    <li><a href="#experiencias">Experiências</a></li>
+    <li><a href="#eventos">Eventos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <div class="nav__right">
+    <a class="btn btn--solid" href="https://wa.me/5585991149217?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20mesa%20no%20Geppos." target="_blank" rel="noopener">Reservar mesa</a>
+    <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<nav class="mobile-menu" id="mobileMenu" aria-label="Menu">
+  <a class="big" href="#casa">A casa</a>
+  <a class="big" href="#cardapio">Cardápio</a>
+  <a class="big" href="#experiencias">Experiências</a>
+  <a class="big" href="#eventos">Eventos</a>
+  <a class="big" href="#contato">Contato</a>
+  <a class="btn btn--solid" href="https://wa.me/5585991149217?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20mesa%20no%20Geppos." target="_blank" rel="noopener">Reservar mesa</a>
+</nav>
+
+<main id="topo">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg"><img src="img/salao-lousa.jpg" alt="Salão do Geppos com lousa e luminárias"></div>
+    <div class="hero__inner">
+      <div class="hero__meta"><span>Meireles · Fortaleza</span><span>Há mais de 35 anos</span></div>
+      <h1 class="display">
+        <span class="reveal-line"><span>Viva essa</span></span>
+        <span class="reveal-line indent"><span><em>experiência</em></span></span>
+      </h1>
+      <div class="hero__foot">
+        <p>O primeiro restaurante italiano contemporâneo de Fortaleza. Massas feitas à mão, insumos frescos e molhos da casa, todos os dias.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--solid" href="https://wa.me/5585991149217?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20mesa%20no%20Geppos." target="_blank" rel="noopener">Reservar mesa</a>
+          <a class="btn" href="#cardapio">Ver cardápio</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>Massas artesanais</span><span>Risotos</span><span>Gnocchis</span><span>Pizzas artesanais</span><span>Linguine de frutos do mar</span><span>Carta de vinhos</span><span>Drinks autorais</span>
+      <span>Massas artesanais</span><span>Risotos</span><span>Gnocchis</span><span>Pizzas artesanais</span><span>Linguine de frutos do mar</span><span>Carta de vinhos</span><span>Drinks autorais</span>
+    </div>
+  </div>
+
+  <!-- A CASA -->
+  <section class="light" id="casa">
+    <div class="wrap about">
+      <div class="about__text r">
+        <span class="eyebrow">Nossa história</span>
+        <h2 class="h2">Itália clássica, <em>sotaque</em> de Fortaleza</h2>
+        <p class="lead">Há mais de 35 anos o Geppos junta a cozinha italiana tradicional com a gastronomia contemporânea da cidade.</p>
+        <p class="muted">Aqui a massa é feita na casa, os insumos chegam frescos e cada molho tem receita própria. O cardápio nasceu de pesquisas na Itália e em São Paulo e foi ganhando a cara de Fortaleza a cada temporada.</p>
+        <div class="stats">
+          <div><strong><span data-count="35">35</span>+</strong><span>anos de casa</span></div>
+          <div><strong>7/7</strong><span>dias por semana</span></div>
+          <div><strong><span data-count="100">100</span>%</strong><span>massa artesanal</span></div>
+        </div>
+      </div>
+      <div class="about__photos">
+        <figure class="r"><img src="img/placa.jpg" alt="Placa do Geppos Italiano em aço corten"><figcaption>Jardins Open Mall</figcaption></figure>
+        <figure class="r"><img src="img/mesa-janela.jpg" alt="Mesa para dois ao lado da janela"><figcaption>Salão interno</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHEF -->
+  <section class="chef">
+    <div class="chef__img"><img src="img/tres-pratos.jpg" alt="Três pratos da casa servidos ao mesmo tempo" loading="lazy"></div>
+    <div class="chef__body r">
+      <span class="eyebrow">Na cozinha</span>
+      <blockquote>Massas feitas à mão e a busca constante por sabores novos.</blockquote>
+      <div class="chef__sign">Louise Benevides</div>
+      <div class="chef__role">Chef do Geppos</div>
+      <p class="chef__mission">Nossa missão é entregar experiências gastronômicas com o atendimento mais qualificado da cidade.</p>
+    </div>
+  </section>
+
+  <!-- CARDÁPIO -->
+  <section id="cardapio">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="r">
+          <span class="eyebrow">Da cozinha para a mesa</span>
+          <h2 class="h2">Alguns dos <em>nossos pratos</em></h2>
+        </div>
+        <p class="lead r">Uma amostra do que sai da cozinha da chef Louise. Massas, risotos e gnocchis feitos na casa, com ingredientes frescos e molhos especiais.</p>
+      </div>
+
+      <div class="dishes">
+        <article class="dish r">
+          <div class="dish__img"><img src="img/bolinho-ossobuco.jpg" alt="Bolinhos de ossobuco com maionese" loading="lazy"></div>
+          <div class="dish__meta"><span>Entrada</span></div>
+          <h3>Bolinho de ossobuco</h3>
+          <p>Crocante por fora, ossobuco desfiado por dentro, com maionese da casa.</p>
+        </article>
+        <article class="dish r">
+          <div class="dish__img"><img src="img/risoto.jpg" alt="Risoto de carne com cogumelos" loading="lazy"></div>
+          <div class="dish__meta"><span>Risoto</span></div>
+          <h3>Risoto de carne e funghi</h3>
+          <p>Arbóreo cremoso, cubos de carne e cogumelos, finalizado com brotos.</p>
+        </article>
+        <article class="dish r">
+          <div class="dish__img"><img src="img/gnocchi-peixe.jpg" alt="Peixe grelhado com gnocchi" loading="lazy"></div>
+          <div class="dish__meta"><span>Gnocchi</span></div>
+          <h3>Peixe com gnocchi dourado</h3>
+          <p>Gnocchi de batata salteado, peixe do dia e molho de ervas com laranja.</p>
+        </article>
+        <article class="dish r">
+          <div class="dish__img"><img src="img/file-pure.jpg" alt="Filé fatiado com purê de abóbora e chimichurri" loading="lazy"></div>
+          <div class="dish__meta"><span>Principal</span></div>
+          <h3>Filé, purê e chimichurri</h3>
+          <p>Corte grelhado ao ponto, purê aveludado e chimichurri fresco.</p>
+        </article>
+      </div>
+
+      <div class="menu-cats r">
+        <ul>
+          <li>Saladas</li><li>Entradas</li><li>Massas artesanais</li><li>Gnocchis</li><li>Risotos</li><li>Pizzas</li><li>Sobremesas</li>
+        </ul>
+        <a class="link-arrow" href="https://digitalmenu.com.br/geppos" target="_blank" rel="noopener">Cardápio completo <span>→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIÊNCIAS -->
+  <section class="light" id="experiencias">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="r">
+          <span class="eyebrow">Mais que um jantar</span>
+          <h2 class="h2">A experiência <em>Geppos</em></h2>
+        </div>
+        <p class="lead r">Do almoço executivo ao jantar com música ao vivo, tem um jeito de viver o Geppos para cada momento.</p>
+      </div>
+
+      <div class="exp">
+        <div class="exp__row r">
+          <span class="exp__num">01</span>
+          <h3>Carta de vinhos</h3>
+          <p>Rótulos nacionais e internacionais escolhidos para acompanhar cada prato.</p>
+          <span class="exp__tag">Todos os dias</span>
+        </div>
+        <div class="exp__row r">
+          <span class="exp__num">02</span>
+          <h3>Drinks &amp; mocktails</h3>
+          <p>Coquetéis autorais, com e sem álcool, criados pelo nosso especialista.</p>
+          <span class="exp__tag">Autorais</span>
+        </div>
+        <div class="exp__row r">
+          <span class="exp__num">03</span>
+          <h3>Pizzas artesanais</h3>
+          <p>Um cardápio completo de pizzas de massa leve, feitas na casa.</p>
+          <span class="exp__tag">Cardápio completo</span>
+        </div>
+        <div class="exp__row r">
+          <span class="exp__num">04</span>
+          <h3>Menu executivo</h3>
+          <p>Entrada, prato principal e sobremesa ou café, pensado para o almoço.</p>
+          <span class="exp__tag">Seg a sáb</span>
+        </div>
+        <div class="exp__row r">
+          <span class="exp__num">05</span>
+          <h3>Música ao vivo</h3>
+          <p>Pop rock nacional e internacional na área externa.</p>
+          <span class="exp__tag">Qui a dom</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AMBIENTE -->
+  <section id="ambiente">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="r">
+          <span class="eyebrow">O ambiente</span>
+          <h2 class="h2">Um lugar <em>para ficar</em></h2>
+        </div>
+        <p class="lead r">Salão climatizado com luz baixa, janelas para o jardim e uma área externa arborizada no coração do Meireles.</p>
+      </div>
+      <div class="gallery">
+        <figure class="r"><img src="img/salao-cortinas.jpg" alt="Salão principal com cortinas e mesa redonda" loading="lazy"><figcaption>Salão principal</figcaption></figure>
+        <figure class="r"><img src="img/salao-lousa.jpg" alt="Lousa com a sugestão da chef" loading="lazy"><figcaption>Sugestão da chef</figcaption></figure>
+        <figure class="r"><img src="img/fachada.jpg" alt="Fachada do Geppos Italiano com o letreiro e a área externa" loading="lazy"><figcaption>Fachada</figcaption></figure>
+        <figure class="r"><img src="img/area-externa.jpg" alt="Área externa com mesas" loading="lazy"><figcaption>Área externa</figcaption></figure>
+      </div>
+      <div class="live r">
+        <span class="live__dot"></span>
+        <div><strong>Música ao vivo de quinta a domingo</strong><span>Pop rock nacional e internacional na área externa, a partir do jantar.</span></div>
+        <a class="btn" href="https://wa.me/5585991149217?text=Ol%C3%A1!%20Quero%20reservar%20uma%20mesa%20na%20%C3%A1rea%20externa." target="_blank" rel="noopener">Reservar área externa</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTOS -->
+  <section class="light" id="eventos">
+    <div class="wrap events">
+      <div class="events__text r">
+        <span class="eyebrow">Eventos privados</span>
+        <h2 class="h2">Sua data, <em>nossa mesa</em></h2>
+        <p class="lead">Aniversários, confraternizações, jantares de empresa e datas especiais. Montamos o evento do seu jeito, do cardápio à carta de vinhos.</p>
+        <div class="albums">
+          <h4>Já aconteceu por aqui</h4>
+          <ul>
+            <li>Festival Italiano <span>Álbum</span></li>
+            <li>Dia das Mães <span>2024</span></li>
+            <li>Dia dos Pais <span>2023</span></li>
+            <li>Dia dos Namorados <span>Álbum</span></li>
+            <li>Ação Budweiser Zero <span>Álbum</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <form class="form r" id="eventForm">
+        <div>
+          <h3>Peça um orçamento</h3>
+          <p>Conte um pouco sobre o evento e a gente responde rapidinho.</p>
+        </div>
+        <div class="field"><label for="f-nome">Nome</label><input id="f-nome" name="nome" required autocomplete="name"></div>
+        <div class="row">
+          <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" required autocomplete="email"></div>
+          <div class="field"><label for="f-pessoas">Nº de pessoas</label><input id="f-pessoas" name="pessoas" type="number" min="1" required></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="f-tipo">Tipo de evento</label>
+            <select id="f-tipo" name="tipo">
+              <option>Aniversário</option><option>Corporativo</option><option>Casamento / noivado</option><option>Outro</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-data">Data</label><input id="f-data" name="data" type="date"></div>
+        </div>
+        <div class="field"><label for="f-desc">Conte sobre o evento</label><textarea id="f-desc" name="descricao"></textarea></div>
+        <button class="btn btn--solid" type="submit">Enviar pedido</button>
+        <div class="form__ok" id="formOk">Pedido recebido! Esta é uma versão demonstrativa: no site final, o pedido chega direto no e-mail ou WhatsApp da casa.</div>
+      </form>
+    </div>
+  </section>
+
+  <!-- PRÊMIOS -->
+  <section>
+    <div class="wrap" style="padding-block: clamp(64px, 8vw, 110px);">
+      <div class="r" style="text-align:center; margin-bottom: 40px;"><span class="eyebrow">Reconhecimento</span></div>
+      <div class="awards r">
+        <div class="award"><strong>Veja</strong><span>Premiado</span></div>
+        <div class="award"><strong>Tripadvisor</strong><span>Premiado</span></div>
+        <div class="award"><strong>Great Place to Work</strong><span>Certificado</span></div>
+        <div class="award"><strong>Melhores do Ano</strong><span>Premiado</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVA -->
+  <section class="reserve" id="contato">
+    <img src="img/salao-cortinas.jpg" alt="" loading="lazy">
+    <div class="wrap">
+      <span class="eyebrow r">Reservas</span>
+      <h2 class="h2 r">Sua mesa <em>está esperando</em></h2>
+      <p class="lead r">Reserve pelo WhatsApp em poucos segundos. Para grupos grandes, fale com a gente pelo formulário de eventos.</p>
+      <div class="hours r">
+        <div><small>Almoço</small><strong>12h às 16h</strong></div>
+        <div><small>Jantar</small><strong>17h à 0h</strong></div>
+      </div>
+      <div class="hero__ctas r">
+        <a class="btn btn--solid" href="https://wa.me/5585991149217?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20mesa%20no%20Geppos." target="_blank" rel="noopener">Reservar pelo WhatsApp</a>
+        <a class="btn" href="https://maps.google.com/?q=Av.+Desembargador+Moreira,+1011,+Meireles,+Fortaleza" target="_blank" rel="noopener">Como chegar</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer">
+    <div>
+      <a href="#topo" class="logo"><img src="img/logo.png" alt="Geppos Italiano" width="1454" height="644" loading="lazy"></a>
+      <p class="footer__tagline">O primeiro restaurante italiano contemporâneo de Fortaleza.</p>
+    </div>
+    <div>
+      <h5>Endereço</h5>
+      <p>Av. Desembargador Moreira, 1011</p>
+      <p>Jardins Open Mall · Meireles</p>
+      <p>Fortaleza / CE</p>
+    </div>
+    <div>
+      <h5>Contato</h5>
+      <a href="tel:+558534331048">(85) 3433-1048</a>
+      <a href="https://wa.me/5585991149217" target="_blank" rel="noopener">WhatsApp (85) 99114-9217</a>
+      <a href="mailto:contato@geppos.com.br">contato@geppos.com.br</a>
+    </div>
+    <div>
+      <h5>Siga</h5>
+      <a href="https://instagram.com/gepposrestaurante" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://facebook.com/geppos" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.tripadvisor.com.br/Search?q=Geppos%20Italiano%20Jardins" target="_blank" rel="noopener">Tripadvisor</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Geppos Italiano. Todos os direitos reservados.</span>
+    <span>Todos os dias · Almoço 12h–16h · Jantar 17h–0h</span>
+  </div>
+</footer>
+
+<a class="wa-float" id="waFloat" href="https://wa.me/5585991149217?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20mesa%20no%20Geppos." target="_blank" rel="noopener" aria-label="Reservar pelo WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.03c-.25.69-1.44 1.32-1.98 1.37-.53.05-1.03.24-3.47-.72-2.93-1.16-4.8-4.16-4.95-4.35-.14-.19-1.17-1.56-1.17-2.98 0-1.42.74-2.12 1.01-2.41.26-.29.57-.36.76-.36l.55.01c.18.01.41-.07.65.5.25.59.84 2.04.91 2.19.07.15.12.32.02.51-.1.19-.15.32-.29.49-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.45.29.15.46.12.63-.07.17-.19.73-.85.92-1.15.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.15.49.22.56.34.07.12.07.69-.18 1.38z"/></svg>
+</a>
+
+<script>
+  // nav muda ao rolar + botão flutuante
+  const nav = document.getElementById('nav');
+  const wa = document.getElementById('waFloat');
+  const onScroll = () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 40);
+    wa.classList.toggle('show', y > window.innerHeight * .8);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // menu mobile
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobileMenu');
+  const toggleMenu = (open) => {
+    burger.setAttribute('aria-expanded', open);
+    menu.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger.addEventListener('click', () => toggleMenu(burger.getAttribute('aria-expanded') !== 'true'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+
+  // formulário de eventos (demonstrativo)
+  document.getElementById('eventForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('formOk').style.display = 'block';
+    e.target.reset();
+  });
+</script>
+
+<!-- Motion (motion.dev) -->
+<script type="module">
+  import { animate, scroll, inView, stagger } from 'https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm';
+
+  if (document.documentElement.classList.contains('motion')) {
+    window.__motionReady = true;
+    const ease = [.25, .46, .45, .94];
+
+    // entrada do hero
+    animate('.hero__bg img', { scale: [1.12, 1] }, { duration: 2.4, ease });
+    animate('.reveal-line > span', { y: ['105%', '0%'] }, { duration: 1.1, delay: stagger(.14, { startDelay: .2 }), ease });
+    animate('.hero__meta', { opacity: [0, 1], y: [12, 0] }, { duration: .9, delay: .5, ease });
+    animate('.hero__foot', { opacity: [0, 1], y: [24, 0] }, { duration: 1, delay: .7, ease });
+
+    // parallax da foto do hero e da reserva
+    scroll(animate('.hero__bg', { y: [0, 160] }, { ease: 'linear' }), { target: document.querySelector('.hero'), offset: ['start start', 'end start'] });
+    scroll(animate('.reserve > img', { y: ['-8%', '8%'], scale: [1.15, 1.15] }, { ease: 'linear' }), { target: document.querySelector('.reserve'), offset: ['start end', 'end start'] });
+
+    // elementos aparecem ao rolar, com leve escalonamento entre irmãos
+    inView('.r', ({ target: el }) => {
+      const i = Array.from(el.parentElement.children).filter(c => c.classList.contains('r')).indexOf(el);
+      animate(el, { opacity: [0, 1], y: [36, 0] }, { duration: 1, delay: (i % 4) * .09, ease });
+    }, { margin: '0px 0px -60px 0px' });
+
+    // contadores
+    inView('[data-count]', ({ target: el }) => {
+      const to = +el.dataset.count;
+      animate(0, to, { duration: 1.8, ease, onUpdate: v => { el.textContent = Math.round(v); } });
+    });
+  }
+</script>
+</body>
+</html>
